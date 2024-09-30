@@ -5,19 +5,19 @@
 # } Driver Code Ends
 #User function Template for python3
 class Solution:
+    def Inorder(self, root, l):
+        if root is not None:
+            self.Inorder(root.left, l)
+            l.append(root.data)
+            self.Inorder(root.right, l)
+        return l
+    
     def merge(self, root1, root2):
-        # code here
-        def inorder(root,ans):
-            if root==None:
-                return 
-            inorder(root.left,ans)
-            ans.append(root.data)
-            inorder(root.right,ans)
-        ans=[]
-        inorder(root1,ans)
-        inorder(root2,ans)
-        ans.sort()
-        return ans
+        l1 = self.Inorder(root1, [])
+        l2 = self.Inorder(root2, [])
+        l = l1 + l2
+        l.sort()
+        return l
 
 #{ 
  # Driver Code Starts.
