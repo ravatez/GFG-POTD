@@ -1,30 +1,16 @@
 #User function Template for python3
 
+
 class Solution:
-    def kthElement(self, k, arr1, arr2):
-        i=0
-        l,r=0,0
-        while i<k:
-            
-            if arr1[l]<=arr2[r]:
-                i+=1
-                l+=1
-            elif arr1[l]>arr2[r]:
-                i+=1
-                r+=1
-                
-            if l==len(arr1):
-                return arr2[k-len(arr1)-1]
-                
-            if r==len(arr2):
-                return arr1[k-len(arr2)-1]
-                
-            
-            if i==k-1:
-                break
-        
-        return min(arr1[l],arr2[r])
-        
+
+    def kthElement(self, a, b, k):
+        c = a+b
+        c = sorted(c)
+        # print(c)
+        return c[k-1]
+
+
+
 #{ 
  # Driver Code Starts
 #Initial Template for Python 3
@@ -40,8 +26,8 @@ def main():
         a = [int(x) for x in input().strip().split()]
         b = [int(x) for x in input().strip().split()]
         ob = Solution()
-        print(ob.kthElement(k, a, b))
-
+        print(ob.kthElement(a, b, k))
+        print("~")
         T -= 1
 
 
