@@ -1,37 +1,21 @@
 class Solution:
     # Function to return a list of integers denoting spiral traversal of matrix.
-    def spirallyTraverse(self, matrix):
-        result = []
-        if not matrix or not matrix[0]:
-            return result
-        
-        top, bottom = 0, len(matrix) - 1
-        left, right = 0, len(matrix[0]) - 1
-        
-        while top <= bottom and left <= right:
-            # Traverse from left to right on the top row
-            for i in range(left, right + 1):
-                result.append(matrix[top][i])
-            top += 1
-            
-            # Traverse from top to bottom on the right column
-            for i in range(top, bottom + 1):
-                result.append(matrix[i][right])
-            right -= 1
-            
-            if top <= bottom:
-                # Traverse from right to left on the bottom row
-                for i in range(right, left - 1, -1):
-                    result.append(matrix[bottom][i])
-                bottom -= 1
-            
-            if left <= right:
-                # Traverse from bottom to top on the left column
-                for i in range(bottom, top - 1, -1):
-                    result.append(matrix[i][left])
-                left += 1
-        
-        return result
+    def spirallyTraverse(self, mat):
+        # code here
+        # code here
+        ans,l,r,u,d=[],0,len(mat[0])-1,0,len(mat)-1
+        while l<=r and u<=d:
+            for i in range(l,r+1): ans.append(mat[u][i])
+            u+=1
+            for i in range(u,d+1): ans.append(mat[i][r])
+            r-=1
+            if(u<=d):
+                for i in range(r,l-1,-1): ans.append(mat[d][i])
+                d-=1
+            if(l<=r):
+                for i in range(d,u-1,-1): ans.append(mat[i][l])
+                l+=1
+        return ans
 
 #{ 
  # Driver Code Starts
@@ -55,5 +39,6 @@ if __name__ == "__main__":
         solution = Solution()
         result = solution.spirallyTraverse(matrix)
         print(" ".join(map(str, result)))
+        print("~")
 
 # } Driver Code Ends
