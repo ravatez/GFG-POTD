@@ -4,24 +4,18 @@
 class Solution:
     
     #Function to check whether a Binary Tree is BST or not.
-    def isBST(self, root):
-        #code here
-        val=-float('inf')
-        def dfs(cur=root):
-            nonlocal val
-            if not cur:
-                return True
-            left=dfs(cur.left)
-            if not left:
-                return False
-            if cur.data<=val:
-                return False
-            val=cur.data
-            right=dfs(cur.right)
-            if not right:
-                return False
+    def sol(self, root, min_val, max_val):
+        if root is None:
             return True
-        return dfs()
+        if root.data >= max_val or root.data <= min_val:
+            return False
+        return self.sol(root.left, min_val, root.data) and self.sol(root.right, root.data, max_val)
+    
+    def isBST(self, root): 
+        min_val = -sys.maxsize - 1  
+        max_val = sys.maxsize       
+        return self.sol(root, min_val, max_val)
+
 
 
 
@@ -107,5 +101,6 @@ if __name__ == "__main__":
             print("true")
         else:
             print("false")
+        print("~")
 
 # } Driver Code Ends
