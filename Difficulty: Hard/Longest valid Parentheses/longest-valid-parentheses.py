@@ -1,22 +1,26 @@
-# User function Template for Python3
 
 class Solution:
     def maxLength(self, s):
         # code here
-        stack = [-1]  # Initialize stack with base index
-        max_len = 0
+        res = 0
+        st = []
+        st.append(-1)
         
-        for i, char in enumerate(s):
-            if char == '(':
-                stack.append(i)
-            else:  # char == ')'
-                stack.pop()
-                if stack:
-                    max_len = max(max_len, i - stack[-1])
+        for i in range(len(s)):
+            c = s[i]
+            
+            if c == '(':
+                st.append(i)
+            else:
+                if st:
+                    st.pop()
+                
+                if st:
+                    res = max(res, i - st[-1])
                 else:
-                    stack.append(i)
+                    st.append(i)
         
-        return max_len
+        return res
 
 #{ 
  # Driver Code Starts
@@ -29,5 +33,6 @@ if __name__ == '__main__':
 
         ob = Solution()
         print(ob.maxLength(S))
+        print("~")
 
 # } Driver Code Ends
