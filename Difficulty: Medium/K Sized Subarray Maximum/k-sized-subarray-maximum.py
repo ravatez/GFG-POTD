@@ -1,25 +1,18 @@
-#User function Template for python3
-
 class Solution:
-    
-    #Function to find maximum of each subarray of size k.
-    def max_of_subarrays(self,k,arr):
+    def maxOfSubarrays(self, arr, k):
+        # code here
+        from collections import deque
+        q, ans = deque(), []
         
-        #code here
-        dq = deque()
-        n = len(arr)
-        res = []
-        
-        for i in range(n):
-            if dq and dq[0] <= i - k:
-                dq.popleft()
-            while dq and arr[dq[-1]] < arr[i]:
-                dq.pop()
-            dq.append(i)
-            if i >= k - 1:
-                res.append(arr[dq[0]])
-        
-        return res
+        for i, e in enumerate(arr):
+            while q and i-q[0]+1 > k:
+                q.popleft()
+            while q and arr[q[-1]] <= e:
+                q.pop()
+            q.append(i)
+            if i >= k-1:
+                ans.append(arr[q[0]])
+        return ans
 
 #{ 
  # Driver Code Starts
@@ -46,12 +39,12 @@ def write():
 if __name__ == '__main__':
     test_cases = int(input())
     for cases in range(test_cases):
-        k = int(input())
         arr = list(map(int, input().strip().split()))
+        k = int(input())
         ob = Solution()
-        res = ob.max_of_subarrays(k, arr)
+        res = ob.maxOfSubarrays(arr, k)
         for i in range(len(res)):
             print(res[i], end=" ")
         print()
-
+        print("~")
 # } Driver Code Ends
