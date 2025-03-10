@@ -1,44 +1,36 @@
 class Solution:
-	def editDistance(self, str1, str2):
+	def editDistance(self, s1, s2):
 		# Code here
-        m = len(str1)
-        n = len(str2)
+        # Code here
+        n1=len(s1)
+        n2=len(s2)
+        dp = [[float("inf")]*(len(s2)+1) for _ in range(len(s1)+1)]
         
-        # Create a table to store results of subproblems
-        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        for j in range(n2+1):
+            dp[n1][j] = n2-j
         
-        # Fill dp[][] in bottom up manner
-        for i in range(m + 1):
-            for j in range(n + 1):
-                
-                # If first string is empty, only option is to insert all characters of second string
-                if i == 0:
-                    dp[i][j] = j    # Min. operations = j
-                
-                # If second string is empty, only option is to remove all characters of first string
-                elif j == 0:
-                    dp[i][j] = i    # Min. operations = i
-                
-                # If last characters are same, ignore last character and recur for remaining string
-                elif str1[i-1] == str2[j-1]:
-                    dp[i][j] = dp[i-1][j-1]
-                
-                # If last character are different, consider all possibilities and find minimum
+        for i in range(n1+1):
+            dp[i][n2] = n1-i
+            
+        for i in range(n1-1,-1,-1):
+            for j in range(n2-1,-1,-1):
+                if s1[i]==s2[j]:
+                    dp[i][j]=dp[i+1][j+1]
                 else:
-                    dp[i][j] = 1 + min(dp[i][j-1],    # Insert
-                                       dp[i-1][j],    # Remove
-                                       dp[i-1][j-1])  # Replace
-        
-        return dp[m][n]
+                    dp[i][j]=1+min(dp[i+1][j+1],dp[i+1][j],dp[i][j+1])
+         
+        return dp[0][0]
 
 #{ 
  # Driver Code Starts
 if __name__ == '__main__':
     T = int(input())
     for i in range(T):
-        s, t = input().split()
+        s1 = input()
+        s2 = input()
         ob = Solution()
-        ans = ob.editDistance(s, t)
+        ans = ob.editDistance(s1, s2)
         print(ans)
+        print("~")
 
 # } Driver Code Ends
