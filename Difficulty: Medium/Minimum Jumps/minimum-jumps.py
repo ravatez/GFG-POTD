@@ -1,17 +1,15 @@
-#User function Template for python3
 class Solution:
 	def minJumps(self, arr):
-	    #code here
-        curr_reach, max_reach, jump_count = 0, 0, 0
-        for i in range(len(arr) - 1):
-            max_reach = max(max_reach, i + arr[i])
-            if curr_reach == i:
-                if max_reach == i:
-                    # We cannot jump any further
-                    return -1
-                jump_count += 1
-                curr_reach = max_reach
-        return jump_count
+	    # code here
+	    # code here
+        cur, prv, step = 0, -1, 0
+        while cur < len(arr) - 1:
+            mx = max([prv+1+i+e for i,e in enumerate(arr[prv+1:cur+1])])
+            if mx>cur:
+                cur, prv, step = mx, cur, step+1
+            else:
+                return -1
+        return step
 
 #{ 
  # Driver Code Starts
@@ -24,5 +22,5 @@ if __name__ == '__main__':
         ob = Solution()
         ans = ob.minJumps(Arr)
         print(ans)
-
+        print("~")
 # } Driver Code Ends
