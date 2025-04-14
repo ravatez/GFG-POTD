@@ -1,91 +1,106 @@
 #User function Template for python3
-
-from typing import List
-
 class Solution:
-    def findOrder(self, alien_dict: List[str], N: int, K: int) -> str:
-        # Your implementation here
+    def findOrder(words):
+        # code here
         from collections import defaultdict
-        adj=defaultdict(set)
-        ind=defaultdict(int)
-        char=set()
-        for ix,ve in enumerate(alien_dict):
-            if ix+1==N:
-                continue
-            cur=list(ve)
-            nxt=list(alien_dict[ix+1])
-            char.update(cur+nxt)
-            for a,b in zip(cur,nxt):
-                if a==b:
-                    continue
-                if b not in adj[a]:
-                    ind[b]+=1
-                    adj[a].add(b)
-                break
-        q=[]
-        for c in char:
-            if ind[c]==0:
-                q.append(c)
-        ret=[]
-        while q:
-            cur=q.pop()
-            ret.append(cur)
-            for nxt in adj[cur]:
-                ind[nxt]-=1
-                if ind[nxt]==0:
-                    q.append(nxt)
-        return ret
-
-
+        from itertools import product
+        
+        g = defaultdict(set)
+        n = len(words)
+        chars = set(words[-1])
+        for i in range(n-1):
+            chars.update(words[i])
+            for j in range(i+1, n):
+                w1, w2 = words[i], words[j]
+                for k in range(min(len(w1), len(w2))):
+                    if w1[k] != w2[k]:
+                        g[w1[k]].add(w2[k])
+                        break
+                else:
+                    if len(w1) > len(w2):
+                        return ""
+                
+        
+        visited, on_stack = set(), set()
+        result = []
+        
+        def dfs(n):
+            if n in on_stack:
+                return True 
+            if n in visited:
+                return False
+            
+            on_stack.add(n)
+            for nbr in g.get(n, []):
+                if dfs(nbr):
+                    return True
+            on_stack.remove(n)
+            visited.add(n)
+            result.append(n)
+            
+        for n in g.keys():
+            if n not in visited:
+                if dfs(n):
+                    return ""
+ 
+        result.extend(chars - set(result))
+        return "".join(reversed(result))
 
 #{ 
  # Driver Code Starts
 #Initial Template for Python 3
+import sys
+from collections import deque
+
+#Position this line where user code will be pasted.
 
 
-class sort_by_order:
+def validate(original, order):
+    char_map = {}
+    for word in original:
+        for ch in word:
+            char_map[ch] = 1
 
-    def __init__(self, s):
-        self.priority = {}
-        for i in range(len(s)):
-            self.priority[s[i]] = i
+    for ch in order:
+        if ch not in char_map:
+            return False
+        del char_map[ch]
 
-    def transform(self, word):
-        new_word = ''
-        for c in word:
-            new_word += chr(ord('a') + self.priority[c])
-        return new_word
+    if char_map:
+        return False
 
-    def sort_this_list(self, lst):
-        lst.sort(key=self.transform)
+    char_index = {ch: i for i, ch in enumerate(order)}
+
+    for i in range(len(original) - 1):
+        a, b = original[i], original[i + 1]
+        k, n, m = 0, len(a), len(b)
+        while k < n and k < m and a[k] == b[k]:
+            k += 1
+        if k < n and k < m and char_index[a[k]] > char_index[b[k]]:
+            return False
+        if k != n and k == m:
+            return False
+
+    return True
 
 
-if __name__ == '__main__':
-    t = int(input())
-    for _ in range(t):
-        line = input().strip().split()
-        n = int(line[0])
-        k = int(line[1])
+if __name__ == "__main__":
+    input_data = sys.stdin.read().strip().split("\n")
+    index = 0
+    t = int(input_data[index])
+    index += 1
+    while t > 0:
+        words = input_data[index].split()
+        index += 1
+        original = words[:]
 
-        alien_dict = [x for x in input().strip().split()]
-        duplicate_dict = alien_dict.copy()
-        ob = Solution()
-        order = ob.findOrder(alien_dict, n, k)
-        s = ""
-        for i in range(k):
-            s += chr(97 + i)
-        l = list(order)
-        l.sort()
-        l = "".join(l)
-        if s != l:
-            print(0)
+        order = Solution.findOrder(words)
+
+        if order == "":
+            print("\"\"")
         else:
-            x = sort_by_order(order)
-            x.sort_this_list(duplicate_dict)
-
-            if duplicate_dict == alien_dict:
-                print(1)
-            else:
-                print(0)
+            print("true" if validate(original, order) else "false")
+        print("~")
+        t -= 1
 
 # } Driver Code Ends
