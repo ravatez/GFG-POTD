@@ -1,33 +1,37 @@
 #User function Template for python3
 
 '''
-Structure of node
-
 # Node Class
 class Node:
     def __init__(self, data):   # data -> value stored in node
         self.data = data
         self.next = None
-
 '''
 class Solution:
     # Function to find the length of a loop in the linked list.
     def countNodesInLoop(self, head):
-        #Your code here
-        slow = fast = head
+        #code here
+        slow=head
+        fast=head
         while fast and fast.next:
-            slow = slow.next
-            fast = fast.next.next
+            slow=slow.next
+            fast=fast.next.next
             if slow==fast:
-                count = 1
-                while slow.next!=fast:
-                    count+=1
-                    slow=slow.next
-                return count
+                return self.countloop(slow)
         return 0
+    def countloop(self,intersect):
+        count=1
+        curr=intersect.next
+        while curr !=intersect:
+            count+=1
+            curr=curr.next
+        return count
 
 #{ 
  # Driver Code Starts
+import sys
+
+
 class Node:
 
     def __init__(self, data):
@@ -58,7 +62,6 @@ def loop_here(head, pos):
 
 
 if __name__ == "__main__":
-    import sys
     input = sys.stdin.read
     data = input().split('\n')
     t = int(data[0])
@@ -75,6 +78,7 @@ if __name__ == "__main__":
         ob = Solution()
         res = ob.countNodesInLoop(head)
         print(res)
+        print("~")
         index += 2
 
 # } Driver Code Ends
